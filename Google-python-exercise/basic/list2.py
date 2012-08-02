@@ -16,9 +16,9 @@ def remove_adjacent(nums):
   # +++your code here+++
   l = len(nums)
   i = 0
-  while i<l-1:
-    if nums[i] == nums[i+1]:
-      del nums[i+1]
+  while i < l-1:
+    if nums[i] == nums[i + 1]:
+      del nums[i + 1]
       l -= 1
     else:
       i += 1
