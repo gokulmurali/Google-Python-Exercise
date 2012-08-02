@@ -47,7 +47,7 @@ import sys
 # Then print_words() and print_top() can just call the utility function.
 def formhash(filename):
   f = open(filename,'r')
-  dict={}
+  dict = {}
   for line in f:
     s = line.split()
     for each in s:
@@ -59,10 +59,10 @@ def formhash(filename):
   return dict
 
 def print_words(filename):
-  dict=formhash(filename)
-  d=sorted(dict.keys()) 
+  dict = formhash(filename)
+  d = sorted(dict.keys()) 
   for word in d:
-    print 'Count of '+ word +' is ' + str(dict[word])
+    print 'Count of ' + word + ' is ' + str(dict[word])
 
 def myfn(word):
   return word[1]
@@ -70,7 +70,7 @@ def myfn(word):
 
 def print_top(filename):
  dict = formhash(filename)
- d = sorted(dict.items(), key=myfn, reverse=True)
+ d = sorted(dict.items(), key = myfn, reverse = True)
  #print d
  for tupl in d[:20]:
    print tupl[0], tupl[1]
