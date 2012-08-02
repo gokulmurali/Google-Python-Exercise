@@ -1,0 +1,126 @@
+#!/usr/bin/python
+# Copyright 2010 Google Inc.
+# Licensed under the Apache License, Version 2.0
+# http://www.apache.org/licenses/LICENSE-2.0
+
+# Google's Python Class
+# http://code.google.com/edu/languages/google-python-class/
+
+import sys
+import re
+import os
+import shutil
+import commands
+
+"""Copy Special exercise
+"""
+
+# +++your code here+++
+# Write functions and modify main() to call them
+def file_list(dir):
+  flag = 0
+  for i in dir:
+    if os.path.exists(i):
+      flag = 1
+ 
+  if flag == 0:
+    f = []
+    return f
+  else:
+    f = []
+    for d in dir:
+      for i in os.listdir(d):
+        f.append(os.getcwd()+"/"+d+'/'+i)  
+    for i in os.listdir(os.getcwd()):
+      f.append((i))
+    return f
+
+   
+ 
+def mydir(todir, dir):
+  f = [] 
+  f = file_list(dir)
+  if not f:
+    if not os.path.exists(todir):
+      os.makedirs(todir)
+    fil = os.listdir(os.getcwd())
+    for f in fil: 
+      name = re.search(r'(\w+__\w+__.\w+)',f)
+      if name:
+        print name.group(1)
+        shutil.copy(f, os.path.join(todir, name.group(1)))
+    sys.exit(0)
+
+  else:
+    if not os.path.exists(todir):
+      os.makedirs(todir)
+    c = 0
+    for i in f:
+      if not os.path.isdir(i):
+        spcl = re.search(r'__\w+__', i)
+        if spcl:
+	  name = re.search(r'(\w+__\w+__.\w+)',i)
+	  if name:
+	    print name.group(1)
+            already = os.listdir(todir)
+            if name.group(1) in already:
+              dest = name.group(1)+'('+str(c)+')'
+              print 'File already exists and wil be appended with '+str(c)
+              c += 1
+            else:
+              dest = name.group(1)
+            shutil.copy(i, os.path.join(todir, dest))
+
+def myzip(tozip, dir):
+  f = []
+  f = os.listdir(os.getcwd())
+  for i in f:
+    if not os.path.isdir(i):
+      spcl = re.search(r'__\w+__', i)
+      if spcl:
+	name = re.search(r'(\w+__\w+__.\w+)',i)
+	if name:
+	  #print name.group(1)
+          os.system("zip -j %s %s" %(tozip, i))
+
+def main():
+  # This basic command line argument parsing code is provided.
+  # Add code to call your functions below.
+
+  # Make a list of command line arguments, omitting the [0] element
+  # which is the script itself.
+  args = sys.argv[1:]
+  if not args:
+    print "usage: [--todir dir][--tozip zipfile] dir [dir ...]";
+    sys.exit(1)
+
+  # todir and tozip are either set from command line
+  # or left as the empty string.
+  # The args array is left just containing the dirs.
+  todir = ''
+  if args[0] == '--todir':
+    todir = args[1]
+    del args[0:2]
+
+  tozip = ''
+  if args[0] == '--tozip':
+    tozip = args[1]
+    del args[0:2]
+
+  dir = []
+  dir = args[0:]
+  if len(args) == 0:
+    print "error: must specify one or more dirs"
+    sys.exit(1)
+
+  else:
+    if todir:
+      mydir(todir, dir)
+    elif tozip:
+      myzip(tozip, dir)
+
+  # +++your code here+++
+  # Call your functions
+  
+if __name__ == "__main__":
+  main()
